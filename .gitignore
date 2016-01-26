@@ -1,0 +1,16 @@
+*beam
+erl_crash.dump
+log/
+ebin/
+ebin/*beam
+ebin/*.beam
+src/*beam
+src/lib/*beam
+src/controller/*beam
+scratch/
+priv/static/images/upload/
+rebar*
+init*
+Makefile
+deps
+start-server.bat

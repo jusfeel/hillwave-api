@@ -1,0 +1,30 @@
+{% extends "template.html" %}
+{% block main %}
+<h1><a href="/riak/">Riak</a></h1>
+<h2>Embed map</h2>
+{% if result %}
+{{result}}
+{% else %}
+<form role="form" id="embed-map-form" method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Select Customer</label>
+            <p>
+            {% for v in keys %}
+            <input name="key" value="{{v}}" type="radio" />{{v}}<br />
+            {% endfor %}
+            </p>
+          </div>
+          <div class="form-entity">
+            <h3>Alter ego(embeded map)</h3>
+            <label>Name</label>
+            <input name="alter_ego" value="" type="text" />
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+</form>
+<br />
+<br />
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "template.html" %}
+{% block main %}
+<h1><a href="/riak/">Riak</a></h1>
+<h2>Delete</h2>
+{% if result %}
+{{result}}
+{% else %}
+<form role="form" id="delete-form" method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Type</label>
+            <input name="type" value="todos_account_maps" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Bucket</label>
+            <input name="bucket" value="users" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Key</label>
+            <input name="key" value="" type="text" />
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+</form>
+<br />
+<br />
+{% endif %}
+{% endblock %}

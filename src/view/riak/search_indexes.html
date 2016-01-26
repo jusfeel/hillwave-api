@@ -1,0 +1,40 @@
+{% extends "template.html" %}
+{% block main %}
+<h1><a href="/riak/">Riak</a></h1>
+{% if result %}
+<h2>Create search index</h2>
+{{result}}
+{% else %}
+<h2>List search indexes</h2>
+  {% if indexes %}
+  <div>
+  {% for index in indexes %}
+    <ul>
+    {% for k,v in index %}
+      <li>{{k}}:{{v}}</li>
+      {% if k == "index" %}
+      <li><a href="/riak/delete_search_index?index={{v}}">Delete</a></li>
+      {% endif %}
+    {% endfor %}
+    </ul>
+    <br />
+  {% endfor %}
+  </div>
+  {% endif %}
+<h2>Create search index</h2>
+<form role="form" id="new-search-index-form" method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Index</label>
+            <input name="index" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Schema</label>
+              <input name="schema" type="text" value="_yz_default" />
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+</form>
+{% endif %}
+{% endblock %}

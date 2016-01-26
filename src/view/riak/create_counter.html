@@ -1,0 +1,31 @@
+{% extends "template.html" %}
+{% block main %}
+<h1><a href="/riak/">Riak</a></h1>
+<h2>Create counter</h2>
+{% if result %}
+{{result}}
+{% else %}
+<form role="form" id="create-counter-form" method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Type</label>
+            <input name="type" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Bucket</label>
+            <input name="bucket" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Key</label>
+            <input name="key" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Increment</label>
+              <input name="increment" type="text" />
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+</form>
+{% endif %}
+{% endblock %}

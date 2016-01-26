@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+{% block main %}
+<h1><a href="/riak/">Riak</a></h1>
+<h2>Simple, range, boolean query</h2>
+  {% if search_results %}
+  <p class="command">riakc_pb_socket:search(Pid, <<"{{index}}">>, <<"{{conditions}}">>)</p>
+  <p class="intro">Search from all the buckets with "{{index}}" index of data with certain conditions</p>
+    <h3>Number Found in Search results:</h3>
+    <p>{{search_results_num_found}}</p>
+    <h3>Max Score in Search results:</h3>
+    <p>    {{search_results_max_score}}</p>
+    <h3>Search results:</h3>
+    <p>{{search_results}}</p>
+    <h3>#search_results.docs:</h3>
+    {% for k,v in docs %}
+    <p>index: {{k}}</p>
+    <p>
+      {% for key,val in v %}
+      {{key}}:{{val}}<br />
+      {% endfor %}
+    </p>
+    {% endfor %}
+  {% else %}
+    <form role="form" id="search-form"  method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Index</label>
+            <input name="index" value="famous" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Condition string</label>
+            <input name="condition" value="" type="text" />
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+    </form>
+  {% endif %}
+{% endblock %}

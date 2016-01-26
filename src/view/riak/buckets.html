@@ -1,0 +1,23 @@
+{% extends "template.html" %}
+{% block main %}
+<h1><a href="/riak/">Riak</a></h1>
+<h2>Buckets of specific bucket type: {{type}}</h2>
+  {% if buckets %}
+  <ul>
+  {% for v in buckets %}
+    <li>{{v}}</li>
+  {% endfor %}
+  </ul>
+  {% else %}
+    <form role="form" id="search-form"  method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Bucket type</label>
+            <input name="type" value="" type="text" />
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+    </form>
+  {% endif %}
+{% endblock %}

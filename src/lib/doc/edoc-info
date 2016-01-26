@@ -1,0 +1,4 @@
+%% encoding: UTF-8
+{application,hillwave}.
+{packages,[]}.
+{modules,[account_lib,hw_adapter,oauth2_hw_backend,security,util,validation]}.

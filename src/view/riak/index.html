@@ -1,0 +1,42 @@
+{% extends "template.html" %}
+{% block main %}
+<p>"#riak-admin bucket-type list" - list all bucket types</p>
+<h1><a href="/riak/">Riak</a></h1>
+{% if connection_status %}
+<div style="padding:5px;">Riak database connection:<span style="color:darkgreen;">OK</span></div>
+<h2>1. <a href="/riak/buckets">Buckets of specific bucket type</a></h2>
+{% else %}
+<div style="padding:5px;">Riak database connection:<span style="color:red;">NOT OK</span></div>
+{% endif %}
+<h2>2. <a href="/riak/get_bucket">Get bucket properties</a></h2>
+<h2>3. <a href="/riak/set_bucket">Set bucket properties</a></h2>
+<h2>4. <a href="/riak/search_indexes">List/create search indexes</a></h2>
+<h2>5. <a href="/riak/create_counter">Create counter</a></h2>
+<h2>6. <a href="/riak/create_set">Create set</a></h2>
+<h2>7. <a href="/riak/create_map">Create map</a></h2>
+<h2>8. <a href="/riak/embed_map">Embed map</a></h2>
+<h2>9. <a href="/riak/simple_query">Simple, range, boolean query</a></h2>
+<h2>10. <a href="/riak/pagination">Query with Pagination</a></h2>
+<h2>11. <a href="/riak/delete">Delete</a></h2>
+<hr />
+<h1>Insert new cat</h1>
+<div id="new-obj-form-msg"></div>
+<form role="form" id="new-obj-form" action="#" method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Cat name</label>
+            <input name="name_s" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Cat age</label>
+              <input name="age_i" value="" type="text" required="" />
+          </div>
+          <div class="form-entity">
+            <label>Leader</label>
+              <input name="leader_b" type="checkbox" /> Is it leader?
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+</form>
+{% endblock %}

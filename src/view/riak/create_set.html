@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+{% block main %}
+<h1><a href="/riak/">Riak</a></h1>
+<h2>Create set</h2>
+{% if result %}
+{{result}}
+{% else %}
+<form role="form" id="create-set-form" method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Type</label>
+            <input name="type" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Bucket</label>
+            <input name="bucket" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Key</label>
+            <input name="key" value="" type="text" />
+          </div>
+          <div id="set-entity" class="form-entity">
+            <label>Set data</label> <input name="set" type="text" />
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+</form>
+<br />
+<br />
+        <div><button id="new-set">Add more set data</button></div>
+{% endif %}
+{% endblock %}
+{% block footer_javascript %}
+<script>
+$(function(){
+  $("#new-set").click(function(){
+    var div = '<div><label>Set data</label> <input name="set" type="text" /></div>';
+    $("#set-entity").append(div);
+  });
+});
+</script>
+{% endblock %}

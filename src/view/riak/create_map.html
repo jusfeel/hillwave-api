@@ -1,0 +1,55 @@
+{% extends "template.html" %}
+{% block main %}
+<h1><a href="/riak/">Riak</a></h1>
+<h2>Create map</h2>
+{% if result %}
+{{result}}
+{% else %}
+<form role="form" id="create-map-form" method="post" accept-charset="utf-8" data-abide="">
+        <div class="row">
+          <div class="form-entity">
+            <label>Type</label>
+            <input name="type" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Bucket</label>
+            <input name="bucket" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Key</label>
+            <input name="key" value="" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>First name</label> <input name="first_name" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Last name</label> <input name="last_name" type="text" />
+          </div>
+          <div class="form-entity">
+            <label>Enterprise customer</label> <input name="enterprise_customer" type="checkbox" />
+          </div>
+          <div class="form-entity">
+            <label>Page visits</label> <input name="page_visits" type="text" />
+          </div>
+          <div id="set-entity" class="form-entity">
+            <label>Interests</label> <input name="interests" type="text" />
+          </div>
+          <br>
+          <input id="submit-button" class="button radius large" value="Submit" type="submit">
+        </div>
+</form>
+<br />
+<br />
+        <div><button id="new-set">Add more interest</button></div>
+{% endif %}
+{% endblock %}
+{% block footer_javascript %}
+<script>
+$(function(){
+  $("#new-set").click(function(){
+    var div = '<div><label>interests</label> <input name="interests" type="text" /></div>';
+    $("#set-entity").append(div);
+  });
+});
+</script>
+{% endblock %}

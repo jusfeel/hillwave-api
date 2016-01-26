@@ -1,0 +1,27 @@
+% Routes file.
+
+% Formats:
+%   {"/some/route", [{controller, "Controller"}, {action, "Action"}]}.
+%   {"/some/route", [{controller, "Controller"}, {action, "Action"}, {id, "42"}]}.
+%   {"/(some|any)/route/(\\d+)", [{controller, '$1'}, {action, "Action"}, {id, '$2'}]}.
+%   {"/some/route/(?<route_id>\\d+)", [{controller, "Controller"}, {action, "Action"}, {id, '$route_id'}]}.
+%   {"/some/route", [{application, some_app}, {controller, "Controller"}, {action, "Action"}, {id, "42"}]}.
+%
+%   {404, [{controller, "Controller"}, {action, "Action"}]}.
+%   {404, [{controller, "Controller"}, {action, "Action"}, {id, "42"}]}.
+%   {404, [{application, some_app}, {controller, "Controller"}, {action, "Action"}, {id, "42"}]}.
+%
+% Note that routing across applications results in a 302 redirect.
+{"/token", [{controller, "members"}, {action, "token"}]}.
+
+% Front page
+% {"/", [{controller, "world"}, {action, "hello"}]}.
+% {"/(some|any)/([0-9]+)", [{controller, '$1'}, {action, "index"}, {id, '$2'}]}.
+%{"/(some|any)/(([a-zA-Z0-9]*-[a-zA-Z0-9]*)+)", [{controller, '$1'}, {action, "index"}, {one_id, '$2'}]}.
+{"/([a-zA-Z0-9_-]+)/(([a-zA-Z0-9]*-[a-zA-Z0-9]*)+)", [{controller, '$1'}, {action, "index"}, {id, '$2'}]}.
+
+% 404 File Not Found handler
+% {404, [{controller, "world"}, {action, "lost"}]}.
+
+% 500 Internal Error handler (only invoked in production)
+% {500, [{controller, "world"}, {action, "calamity"}]}.
