@@ -8,8 +8,31 @@ res_object(Record) ->
   Data = get_data(Type, Record),
   lists:append(Data, Relationships).
 
+res_object(Record, HasManys) ->
+  Relationships = [{"relationships", lists:append(proplists:get_value("relationships", get_relationships(Record)), HasManys)}],
+  Type = atom_to_list(element(1, Record)),
+  Data = get_data(Type, Record),
+  lists:append(Data, Relationships).
+
 data(Record) ->
   [{"data", res_object(Record)}].
+
+data(Record, HasManys) ->
+  data(Record, HasManys, true).
+
+data(Record, HasManys, _) when HasManys =:= [] ->
+  data(Record);
+data(Record, HasManys, false) ->
+  F = fun({Key, Records}) -> {Key, boss_record_ids(Records)} end,
+  [{"data", res_object(Record, [F(X) || X <- HasManys])}];
+data(Record, HasManys, true) ->
+  F = fun({Key, Records}) -> {Key, boss_record_ids(Records)} end,
+
+  Fold = fun(Elem, Acc) -> lists:append(Elem, Acc) end,
+  F2 = fun({_, Records}) -> lists:map(fun(Elem) -> res_object(Elem) end, Records) end,
+  Included = lists:foldl(Fold, [], [F2(X) || X <- HasManys]),
+  [{"data", res_object(Record, [F(X) || X <- HasManys])}, {"included", Included}].
+
 
 is_proplist(List) ->
   is_proplist(List, true).
@@ -62,9 +85,15 @@ tuple_to_json({Key, Value}) when is_list(Key) ->
     false ->
       case is_proplist_list(Value) of
         true -> "\"" ++ Key ++ "\":[" ++ string:join([proplist_to_json(X)|| X <- Value], ",") ++ "]";
-        false -> "\"" ++ Key ++ "\":\"" ++ Value ++ "\""
+        false when is_boolean(Value) ->
+          "\"" ++ Key ++ "\":" ++ bool_to_list(Value);
+        false ->
+          "\"" ++ Key ++ "\":\"" ++ Value ++ "\""
       end
   end.
+
+bool_to_list(Boolean) when Boolean =:= true -> "true";
+bool_to_list(Boolean) when Boolean =:= false -> "false".
 
 to_json(Record) ->
   escape(proplist_to_json(data(Record))).
@@ -72,8 +101,16 @@ to_json(Record) ->
 escape(Json) ->
   re:replace(Json,"\n","\\\\n",[global,{return,list}]).
 
-boss_record_ids(Type, Record) ->
-  [{"data", [{"id", Record:id()}, {"type", Type}]}].
+boss_record_ids(Record) when is_tuple(Record) ->
+  Type = atom_to_list(element(1, Record)),
+  [{"data", [{"id", Record:id()}, {"type", inflector:pluralize(Type)}]}];
+boss_record_ids(List) when is_list(List) ->
+  F = fun(Record) ->
+        Type = inflector:pluralize(atom_to_list(element(1, Record))),
+        [{"id", Record:id()}, {"type", inflector:pluralize(Type)}]
+      end,
+  [{"data", [F(X) || X <- List ]}].
+
 
 get_data(Type, Record) ->
   Attrs = proplists:delete("id", [{atom_to_list(K), V} || {K,V} <- Record:attributes()]),
@@ -86,9 +123,9 @@ get_relationships(Record) ->
   end.
 
 process_belongs_to([], Acc) -> [{"relationships", Acc}];
-process_belongs_to([{Model, Record}|T], Acc) ->
-  M = atom_to_list(Model),
-  NewAcc = [{M, boss_record_ids(M, Record)}|Acc],
+process_belongs_to([{BelongsToModel, Record}|T], Acc) ->
+  M = atom_to_list(BelongsToModel),
+  NewAcc = [{M, boss_record_ids(Record)}|Acc],
   process_belongs_to(T, NewAcc).
 
 parse_data_attributes(Keys, Object) ->
@@ -116,7 +153,7 @@ related_id(Model, Body) ->
   Data1 = proplists:get_value(data, Pers),
   utf8cn:bin_to_list(proplists:get_value(id, Data1)).
 
-error(Code, Title) ->
+err(Code, Title) ->
   "{\"errors\": [{\"code\":\"" ++ Code ++ "\", \"title\":\"" ++ Title ++ "\"}]}".
 
 

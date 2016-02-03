@@ -1,3 +1,9 @@
+-define(API_KEY, "3NC4vxfEiej5niCnHlKJf5WNnBHqqUCu").
+-define(SECRET_WORD, "ILIKEEMBERJS").
+-define(UPLOAD_ROOT, "/opt/www/hillwave/priv/static/upload").
+-define(DOMAIN, "http://dev.hillwave.cn").
+-define(IMAGE_DOMAIN, "http://dev.hillwave.cn/static/upload/").
+
 -define(debug, ok).
 -define(logging, ok).
 
@@ -34,7 +40,7 @@
 -define(ACAMG, {"Access-Control-Allow-Methods", "GET, OPTIONS"}).
 -define(ACAMP, {"Access-Control-Allow-Methods", "POST, OPTIONS"}).
 -define(ACAMA, {"Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"}).
--define(ACAH, {"Access-Control-Allow-Headers", "authorization,content-type"}).
+-define(ACAH, {"Access-Control-Allow-Headers", "authorization,content-type,api_key,secret_word"}).
 -define(ACAO, {"Access-Control-Allow-Origin", "http://localhost:4200"}).
 
 -define(ALLOW_G, [{"Access-Control-Allow-Methods", "GET, OPTIONS"}, {"Access-Control-Allow-Headers", "authorization"}]).

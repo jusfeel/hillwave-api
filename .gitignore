@@ -14,3 +14,4 @@ init*
 Makefile
 deps
 start-server.bat
+priv/static/upload

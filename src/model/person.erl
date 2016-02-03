@@ -1,5 +1,5 @@
--module(person, [Id, 
-                 Name::string(), 
+-module(person, [Id,
+                 Name::string(),
                  DisplayName::string(),
                  Description::string(),
                  MemberId::string(), % member who adds it
@@ -7,6 +7,6 @@
 -compile(export_all).
 
 -belongs_to(member).
--has({works, many}).
--has({proses, many}).
--had({quotes, many}).
+-has({works, many, [{foreign_key, writer_id}]}).
+-has({proses, many, [{foreign_key, author_id}]}).
+-has({quotes, many}).

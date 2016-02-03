@@ -1,10 +1,18 @@
 -module(validation).
 -export([
           validate_registration/4,
-          attributes/1
+          attributes/1,
+          api_key/1
         ]).
 -include("hillwave.hrl").
 
+api_key(Req) ->
+  ?DEBUG("~p", Req:headers()),
+  ?DEBUG("~p", Req:header("API_KEY")),
+  valid_api(Req:header(api_key), Req:header(secret_word)).
+
+valid_api(?API_KEY, ?SECRET_WORD) -> true;
+valid_api(_,_) -> false.
 
 validate_registration(Email, Username, Password1, Password2) ->
   F = fun(Result, Acc) ->
@@ -37,11 +45,17 @@ attributes([{K, Value}|T], Acc) ->
           true -> atom_to_list(K);
           false -> K
         end,
-  case length(Value) of
-    0 ->
-      NewAcc = [[{"title", Key ++ " can not be empty"}]|Acc],
-      attributes(T, NewAcc);
-    _ ->
+  ValueIsList = is_list(Value),
+  if ValueIsList ->
+      case length(Value) of
+        0 ->
+          NewAcc = [[{"detail", "The attribute '" ++ Key ++ "' is required"}, {"source", [{"pointer","data/attributes/" ++ Key}]}]|Acc],
+          attributes(T, NewAcc);
+        _ ->
+          attributes(T, Acc)
+      end;
+    true ->
+      %% boolean, number
       attributes(T, Acc)
   end.
 
