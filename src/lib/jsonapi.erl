@@ -156,6 +156,19 @@ related_id(Model, Body) ->
 err(Code, Title) ->
   "{\"errors\": [{\"code\":\"" ++ Code ++ "\", \"title\":\"" ++ Title ++ "\"}]}".
 
+links(Model, Number, Size, Total) ->
+  Base = ?DOMAIN ++ "/" ++ inflector:pluralize(atom_to_list(Model)) ++  "?",
+  Params = fun(Num, S) -> "page[number]=" ++ integer_to_list(Num) ++ "&page[size]=" ++ integer_to_list(S) end,
+
+  Self = {"self", Base ++ Params(Number, Size)},
+  Last = {"last", Base ++ Params(Total, Size)},
+  case Number < Total of
+    true ->
+      Next = {"next", Base ++ Params(Number + 1, Size)},
+      [Self, Next, Last];
+    _ ->
+      [Self, Last]
+  end.
 
 
 

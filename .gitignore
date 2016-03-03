@@ -9,9 +9,5 @@ src/lib/*beam
 src/controller/*beam
 scratch/
 priv/static/images/upload/
-rebar*
-init*
-Makefile
 deps
-start-server.bat
 priv/static/upload

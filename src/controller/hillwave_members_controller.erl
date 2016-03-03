@@ -2,14 +2,18 @@
 -compile(export_all).
 -include("hillwave.hrl").
 
-index('OPTIONS', [Id]) -> {json, [], ?OPTG};
-index('OPTIONS', []) -> {json, [], ?OPTA};
-index('GET', []) ->
+before_(_,_,_) -> account_lib:require_login(Req).
+
+index(_, _, {error, Reason}) -> hwdb:err(Reason);
+
+index('OPTIONS', [Id], _) -> {json, [], ?OPTG};
+index('OPTIONS', [], _) -> {json, [], ?OPTA};
+index('GET', [], _) ->
   ?DEBUG("~p",[]),
   {json, []};
 
 %% @doc registration
-index('POST', []) ->
+index('POST', [], _) ->
   ReqBody = jsx:decode(Req:request_body(), [{labels, atom}]),
   Keys = [email, username, password1, password2],
   [Email, Username, Password1, Password2] = jsonapi:attributes(Keys, ReqBody),

@@ -1,11 +1,34 @@
--define(API_KEY, "3NC4vxfEiej5niCnHlKJf5WNnBHqqUCu").
--define(SECRET_WORD, "ILIKEEMBERJS").
--define(UPLOAD_ROOT, "/opt/www/hillwave/priv/static/upload").
--define(DOMAIN, "http://dev.hillwave.cn").
--define(IMAGE_DOMAIN, "http://dev.hillwave.cn/static/upload/").
 
+%-define(production, ok).
 -define(debug, ok).
 -define(logging, ok).
+
+%%------------- change below with caution --------------%%
+
+%% these 2 are not implemented on the client since the header is not readable by simple brige
+-define(API_KEY, "3NC4vxfEiej5niCnHlKJf5WNnBHqqUCu").
+-define(SECRET_WORD, "ILIKEEMBERJS").
+
+-ifdef(production).
+
+-define(DOMAIN, "http://hw.jusfeel.cn").
+-define(UPLOAD_ROOT, "/alidata/www/hillwave/priv/static/upload").
+-define(IMAGE_DOMAIN, ?DOMAIN ++ "/static/upload/").
+-define(ACAO, {"Access-Control-Allow-Origin", "http://www.hillwave.cn"}).
+
+-else.
+
+-define(DOMAIN, "http://dev.hillwave.cn").
+-define(UPLOAD_ROOT, "/opt/www/hillwave/priv/static/upload").
+-define(IMAGE_DOMAIN, ?DOMAIN ++ "/static/upload/").
+% local build
+%-define(ACAO, {"Access-Control-Allow-Origin", "http://ember.hillwave.cn"}).
+% local development
+-define(ACAO, {"Access-Control-Allow-Origin", "http://192.168.1.111:4200"}).
+% mobile
+%-define(ACAO, {"Access-Control-Allow-Origin", "http://192.168.1.111:4200"}).
+
+-endif.
 
 -ifdef(debug).
 -define(DEBUG(Format, Args), io:format("{~s,~w} DEBUG: ~n" ++ Format ++ "~n", [ ?MODULE, ?LINE, Args])).
@@ -41,7 +64,6 @@
 -define(ACAMP, {"Access-Control-Allow-Methods", "POST, OPTIONS"}).
 -define(ACAMA, {"Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS"}).
 -define(ACAH, {"Access-Control-Allow-Headers", "authorization,content-type,api_key,secret_word"}).
--define(ACAO, {"Access-Control-Allow-Origin", "http://localhost:4200"}).
 
 -define(ALLOW_G, [{"Access-Control-Allow-Methods", "GET, OPTIONS"}, {"Access-Control-Allow-Headers", "authorization"}]).
 -define(ALLOW_P, [{"Access-Control-Allow-Methods", "POST, OPTIONS"}, {"Access-Control-Allow-Headers", "authorization"}]).

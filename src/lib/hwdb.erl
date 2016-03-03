@@ -26,10 +26,25 @@ find(Id, Extras) when is_list(Id), is_list(Extras) ->
   end;
 find(Model, Cond) when is_atom(Model) ->
   Records = [jsonapi:res_object(X) || X <- boss_db:find(Model, Cond) ],
-  {json, [{"data", Records}], ?HEADERS}.
+  {json, [{"data", Records}, {"total", length(Records)}], ?HEADERS}.
 find(Model, Cond, Opts) when is_atom(Model) ->
+  % per page
+  Limit = proplists:get_value(limit, Opts),
+  case Limit of
+    undefined -> Size = 12;
+    _ -> Size = Limit
+  end,
+  % starting page
+  Offset = proplists:get_value(offset, Opts),
+  case Offset of
+    undefined -> Number = 1;
+    _ -> Number = util:ceiling(Offset/Size) + 1
+  end,
+
   Records = [jsonapi:res_object(X) || X <- boss_db:find(Model, Cond, Opts) ],
-  {json, [{"data", Records}], ?HEADERS}.
+  TotalPages = util:ceiling(boss_db:count(Model) / Size),
+  Links = jsonapi:links(Model, Number, Size, TotalPages),
+  {json, [{"data", Records}, {"meta", [{"total_pages", TotalPages}]}, {"links", Links}], ?HEADERS}.
 
 patch_save(Record) ->
   case Record:save() of
