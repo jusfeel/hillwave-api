@@ -88,7 +88,8 @@ tuple_to_json({Key, Value}) when is_list(Key) ->
         false when is_boolean(Value) ->
           "\"" ++ Key ++ "\":" ++ bool_to_list(Value);
         false ->
-          "\"" ++ Key ++ "\":\"" ++ Value ++ "\""
+          DoubleQuotesEscaped = re:replace(Value,"\"","\\\\\"",[global,{return,list}]),
+          "\"" ++ Key ++ "\":\"" ++ DoubleQuotesEscaped ++ "\""
       end
   end.
 
