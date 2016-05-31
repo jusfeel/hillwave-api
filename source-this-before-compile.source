@@ -1,0 +1,2 @@
+export CFLAGS=-I/usr/local/lib/erlang/lib/erl_interface-3.7.14/include
+export LDFLAGS=-L/usr/local/lib/erlang/lib/erl_interface-3.7.14/lib

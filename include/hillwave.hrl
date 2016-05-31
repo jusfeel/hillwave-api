@@ -1,7 +1,7 @@
 
-%-define(production, ok).
--define(debug, ok).
--define(logging, ok).
+-define(production, ok).
+%-define(debug, ok).
+%-define(logging, ok).
 
 %%------------- change below with caution --------------%%
 
@@ -11,22 +11,26 @@
 
 -ifdef(production).
 
+-define(SITE_URL, "http://www.hillwave.cn").
 -define(DOMAIN, "http://hw.jusfeel.cn").
 -define(UPLOAD_ROOT, "/alidata/www/hillwave/priv/static/upload").
 -define(IMAGE_DOMAIN, ?DOMAIN ++ "/static/upload/").
 -define(ACAO, {"Access-Control-Allow-Origin", "http://www.hillwave.cn"}).
+-define(SITEMAP_PATH, "/alidata/www/hillwave_ember/sitemap.xml").
 
 -else.
 
+-define(SITE_URL, "http://192.168.1.102:4200").
 -define(DOMAIN, "http://dev.hillwave.cn").
 -define(UPLOAD_ROOT, "/opt/www/hillwave/priv/static/upload").
 -define(IMAGE_DOMAIN, ?DOMAIN ++ "/static/upload/").
 % local build
 %-define(ACAO, {"Access-Control-Allow-Origin", "http://ember.hillwave.cn"}).
 % local development
--define(ACAO, {"Access-Control-Allow-Origin", "http://192.168.1.111:4200"}).
+-define(ACAO, {"Access-Control-Allow-Origin", "http://192.168.1.102:4200"}).
+-define(SITEMAP_PATH, "/opt/www/hillwave/sitemap.xml").
 % mobile
-%-define(ACAO, {"Access-Control-Allow-Origin", "http://192.168.1.111:4200"}).
+%-define(ACAO, {"Access-Control-Allow-Origin", "http://192.168.1.102:4200"}).
 
 -endif.
 

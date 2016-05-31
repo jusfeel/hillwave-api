@@ -13,6 +13,7 @@
 %
 % Note that routing across applications results in a 302 redirect.
 {"/token", [{controller, "members"}, {action, "token"}]}.
+{"/sitemap.xml", [{controller, "public"}, {action, "sitemap"}]}.
 
 % Front page
 % {"/", [{controller, "world"}, {action, "hello"}]}.
